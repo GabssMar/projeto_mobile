@@ -18,11 +18,14 @@ Durante o segundo ano do curso, a disciplina propôs a execução de um projeto 
 ## Funcionalidades
 
 - **Funcionalidade 1**: Tela de Login
+  
 A tela de login apresenta o logo da empresa que acolheu nossa sala durante o projeto, ela consta com os campos para login do agente de trânsito que irá aplicar a multa/aviso.
 
 
 - **Funcionalidade 2**: Tela Home
+
 A tela Home apresenta cinco botões, sendo eles "Multas Aplicadas", "Avisos Aplicados", "Nova Multa", "Novo Aviso" e "Voltar" para voltar à tela de Login.
+
 A tela consta também com dois botões superiores, um deles para abrir o menu, e o outro para que o agente possa acessar sua conta.
 
 ## Como Rodar o Projeto
