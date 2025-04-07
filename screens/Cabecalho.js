@@ -4,12 +4,6 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 export default function Cabecalho({ title, navigation }) {
   return (
     <View style={styles.headerContainer}>
-      <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Menu')} >
-        <Image 
-          source={{ uri: 'https://img.icons8.com/?size=100&id=3096&format=png&color=000000' }} 
-          style={styles.iconMenu} />
-      </TouchableOpacity>
-
       <Text style={styles.title}>{title}</Text>
 
       <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Conta')} >
@@ -41,17 +35,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  iconMenu: {
-    width: 30,
-    height: 30,
-    tintColor: '#fff',
-  },
   title: {
     color: '#fff',
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
     flex: 1,
+    left: 20,
   },
   iconConta: {
     width: 30,
