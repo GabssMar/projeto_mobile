@@ -24,10 +24,6 @@ export default function HomeScreen({ navigation }) {
       <TouchableOpacity style={styles.novoAviso} onPress={() => navigation.navigate('NovoAviso')}>
         <Text style={styles.textoBotao}>Novo Aviso</Text>
       </TouchableOpacity>
-
-      <TouchableOpacity style={styles.botao} onPress={() => navigation.goBack()}>
-        <Text style={styles.textoBotao}>Voltar</Text>
-      </TouchableOpacity>
     </View>
   );
 }
