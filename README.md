@@ -1,44 +1,103 @@
-# Projeto de Fábrica de Projetos Ágeis - UNIMAR
 
-## Descrição
+# Projeto Mobile - Sistema de Multas
 
-Este projeto foi desenvolvido para a disciplina de **Fábrica de Projetos Ágeis** do curso de **Análise e Desenvolvimento de Sistemas** da **UNIMAR - Universidade de Marília**.
+Aplicativo mobile desenvolvido na disciplina de **Fábrica de Projetos Ágeis** do curso de **Análise e Desenvolvimento de Sistemas (UNIMAR)**. O app foi idealizado para **auxiliar agentes de trânsito** na aplicação e gerenciamento de **multas e avisos**, promovendo praticidade e eficiência no dia a dia.
 
-## Contexto
+---
 
-Durante o segundo ano do curso, a disciplina propôs a execução de um projeto prático, onde os alunos teriam a oportunidade de trabalhar em equipe e implementar uma solução de software para a empresa responsável utilizando boas práticas de desenvolvimento ágil.
+## Objetivos
 
-## Tecnologias Utilizadas
+- Facilitar o registro e a visualização de infrações de trânsito.
+- Agilizar o processo de emissão de **multas** e **avisos** pelos agentes.
+- Permitir navegação simples e rápida entre as funcionalidades principais.
+- Aplicar conceitos ágeis e práticas modernas de desenvolvimento mobile.
 
-- **Linguagem de Programação**: JavaScript
-- **Framework**: React Native
-- **Ferramentas Ágeis**: Figma, Notion
-- **Controle de Versão**: Git e GitHub
+---
 
 ## Funcionalidades
 
-- **Funcionalidade 1**: Tela de Login
-  
-A tela de login apresenta o logo da empresa que acolheu nossa sala durante o projeto, ela consta com os campos para login do agente de trânsito que irá aplicar a multa/aviso.
+- **Autenticação de agentes**: Login por CPF com identificação da empresa.
+- **Tela inicial (Dashboard)** com atalhos:
+  - 📄 Multas Aplicadas
+  - 📨 Avisos Aplicados
+  - 🆕 Nova Multa
+  - 🆕 Novo Aviso
+- **Formulários interativos** para novas infrações:
+  - Fabricante, Modelo, Placa, Tipo de infração
+- **Detalhamento de Multas** e estrutura de navegação intuitiva.
+- **Cabeçalho com botão de voltar** e título dinâmico em todas as telas.
+- Navegação controlada via React Navigation.
 
+---
 
-- **Funcionalidade 2**: Tela Home
+## Tecnologias Utilizadas
 
-A tela Home apresenta cinco botões, sendo eles "Multas Aplicadas", "Avisos Aplicados", "Nova Multa", "Novo Aviso" e "Voltar" para voltar à tela de Login.
+| Ferramenta        | Descrição                              |
+|-------------------|----------------------------------------|
+| **React Native**  | Framework para desenvolvimento mobile  |
+| **JavaScript**    | Linguagem principal do projeto         |
+| **Expo**          | Plataforma para build e execução       |
+| **React Navigation** | Gerenciamento de rotas              |
+| **Figma**         | Protótipo da interface                 |
+| **Git + GitHub**  | Versionamento de código                |
 
-A tela consta também com dois botões superiores, um deles para abrir o menu, e o outro para que o agente possa acessar sua conta.
+---
 
-## Como Rodar o Projeto
+## Como Rodar o Projeto Localmente
 
 ### Pré-requisitos
 
-Certifique-se de ter os seguintes requisitos instalados:
+- Node.js (v18+)
+- Expo CLI (`npm install -g expo-cli`)
+- App **Expo Go** no celular
 
-- Node.js (versão [22.14.0])
-- Expo Go
+### Instruções
 
-### Instalando
+```bash
+# Clone o repositório
+git clone https://github.com/GabssMar/projeto_mobile.git
 
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/[usuario]/[nome-do-repositorio].git
+# Acesse a pasta
+cd projeto_mobile
+
+# Instale as dependências
+npm install
+
+# Inicie o projeto
+npx expo start
+```
+
+Escaneie o QR Code com o **Expo Go** para visualizar no celular.
+
+---
+
+## Estrutura do Projeto
+
+```
+projeto_mobile/
+├── App.js
+├── screens/
+│   ├── LoginScreen.js
+│   ├── HomeScreen.js
+│   ├── Multas.js
+│   ├── NovaMulta.js
+│   └── DetalhesMulta.js
+├── components/
+│   └── Cabecalho.js
+└── assets/
+```
+
+---
+
+## Desenvolvido por
+
+**Gabriele Martinez**  
+Estudante de Análise e Desenvolvimento de Sistemas - UNIMAR  
+[GitHub](https://github.com/GabssMar)
+
+---
+
+## 📄 Licença
+
+Projeto acadêmico desenvolvido com fins educacionais.  
+© 2025 - Todos os direitos reservados.
