@@ -1,7 +1,46 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator, ScrollView } from 'react-native';
+import api from '../services/api';
 
-export default function Multa({ navigation }) {
+export default function Multas({ navigation }) {
+    const [multas, setMultas] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        async function fetchMultas() {
+            try {
+                const response = await api.get('/multas');
+                setMultas(response.data);
+            } catch (err) {
+                setError('Erro ao buscar multas');
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchMultas();
+    }, []);
+
+    const renderItem = ({ item }) => (
+        <View style={styles.cardMulta}>
+            <Text style={styles.title}>{item.id}</Text>
+            <Text style={styles.dados}>Fabricante: {item.fabricante}</Text>
+            <Text style={styles.dados}>Modelo: {item.modelo}</Text>
+            <Text style={styles.dados}>Placa: {item.placa}</Text>
+            <Text style={styles.dados}>Data: {item.data}</Text>
+            <View style={styles.botaoStatus}>
+                <Text style={styles.status}>Análise pendente</Text>
+            </View>
+        </View>
+    );
+
+    if (loading) {
+        return <View style={styles.loading}><ActivityIndicator size="large" color="#fff" /></View>;
+    }
+    if (error) {
+        return <View style={styles.loading}><Text style={{ color: '#fff' }}>{error}</Text></View>;
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.cabecalho}>
@@ -12,18 +51,17 @@ export default function Multa({ navigation }) {
                 </TouchableOpacity>
                 <Text style={styles.titleCabecalho}>Multas Aplicadas</Text>
             </View>
-            
             <View style={styles.listaMulta}>
-                <View style={styles.cardMulta}>
-                    <Text style={styles.title}>00001</Text>
-                    <Text style={styles.dados}>Fabricante: Fiat</Text>
-                    <Text style={styles.dados}>Modelo: Palio</Text>
-                    <Text style={styles.dados}>Placa: MNL-6126</Text>
-                    <Text style={styles.dados}>Data: 10/10/2021</Text>
-                    <TouchableOpacity style={styles.botaoInformacoes} onPress={() => navigation.navigate('DetalhesMulta')}>
-                        <Image source ={{ uri: 'https://img.icons8.com/?size=100&id=61873&format=png&color=FFFFFF' }} style={styles.iconeInformacoes} />
-                    </TouchableOpacity>
-                </View>
+                <FlatList
+                    data={multas}
+                    keyExtractor={(item, index) => {
+                        if (item.id && !isNaN(item.id)) return item.id.toString();
+                        if (item.placa && item.data) return `${item.placa}_${item.data}`;
+                        return index.toString();
+                    }}
+                    renderItem={renderItem}
+                    contentContainerStyle={{ paddingBottom: 20 }}
+                />
             </View>
         </View>
     );
@@ -91,5 +129,44 @@ const styles = StyleSheet.create({
         width: 30,
         height: 30,
         tintColor: '#fff',
+    },
+    botaoStatus: {
+        backgroundColor: '#FFDD00',
+        borderRadius: 4,
+        padding: 4,
+        width: '10%',
+        marginTop: 10,
+        position: 'absolute',
+        right: 16,
+    },
+    status: {
+        color: '#000',
+        fontSize: 14,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    botaoStatusConcluido: {
+        backgroundColor: '#6AA84F',
+        borderRadius: 4,
+        padding: 4,
+        width: '10%',
+        marginTop: 10,
+        position: 'absolute',
+        right: 16,
+    },
+    statusConcluido: {
+        color: '#000',
+        fontSize: 14,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    loading: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#38454D',
+    },
+    scrollContent: {
+        paddingBottom: 32,
     },
 });
