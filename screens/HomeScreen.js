@@ -12,17 +12,9 @@ export default function HomeScreen({ navigation }) {
       <TouchableOpacity style={styles.botaoMultas} onPress={() => navigation.navigate('Multas')}>
         <Text style={styles.textoBotao}>Multas Aplicadas</Text>
       </TouchableOpacity>
-
-      <TouchableOpacity style={styles.botaoAvisos} onPress={() => navigation.navigate('Avisos')}>
-        <Text style={styles.textoBotao}>Avisos Aplicados</Text>
-      </TouchableOpacity>
-
+      
       <TouchableOpacity style={styles.novaMulta} onPress={() => navigation.navigate('NovaMulta')}>
         <Text style={styles.textoBotao}>Nova Multa</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.novoAviso} onPress={() => navigation.navigate('NovoAviso')}>
-        <Text style={styles.textoBotao}>Novo Aviso</Text>
       </TouchableOpacity>
     </View>
   );
@@ -67,19 +59,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 8,
     marginTop: 30,
-},
+  },
   novaMulta: {
     backgroundColor: '#3051F5',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
     marginTop: 30,
-},
+  },
+  multaAntiga: {
+    backgroundColor: '#9B59B6',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 30,
+  },
   novoAviso: {
     backgroundColor: '#5ADB14',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
     marginTop: 30,
-},
+  },
 });

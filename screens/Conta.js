@@ -1,7 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Conta({ navigation }) {
+    const [usuario, setUsuario] = useState(null);
+
+    useEffect(() => {
+        const fetchUsuario = async () => {
+          const userData = await AsyncStorage.getItem('usuario');
+          if (userData) {
+            const userObj = JSON.parse(userData);
+            setUsuario(userObj);
+            console.log('Usuário carregado:', userObj);
+          }
+        };
+        fetchUsuario();
+      }, []);
+
     return (
         <View style={styles.container}>
             <View style={styles.headerContainer}>
@@ -18,33 +33,47 @@ export default function Conta({ navigation }) {
                 source={{ uri: 'https://img.icons8.com/?size=100&id=85147&format=png&color=ffffff' }} 
                 style={styles.iconeConta} 
             />
-            <Text style={styles.texto}>Nome do Agente</Text>
+            <Text style={styles.texto}>{usuario ? usuario.nome : 'Nome do Agente'}</Text>
 
-            <View style={styles.dadosContainer}>
-                <View style={styles.dadosAgente}>
-                    <View>
-                        <Text style={styles.textoLabel}>E-mail</Text>
-                        <Text style={styles.textoValor}>teste.agente@dsin.com.br</Text>
-                    </View>
-                    <Image 
-                        source={{ uri: 'https://img.icons8.com/?size=100&id=71201&format=png&color=ffffff' }} 
-                        style={styles.iconeEdit} 
-                    />
-                </View>
+            
 
-                <View style={styles.dadosAgente}>
-                    <View>
-                        <Text style={styles.textoLabel}>Senha</Text>
-                        <Text style={styles.textoValor}>senha.dsin123</Text>
-                    </View>
-                    <Image 
-                        source={{ uri: 'https://img.icons8.com/?size=100&id=71201&format=png&color=ffffff' }} 
-                        style={styles.iconeEdit} 
-                    />
+            <View style={styles.dadosAgente}>
+                <View>
+                    <Text style={styles.textoLabel}>Código do Agente</Text>
+                    <Text style={styles.textoValor}>{usuario ? usuario.codigoAgente : '---'}</Text>
                 </View>
+                <Image 
+                    source={{ uri: 'https://img.icons8.com/?size=100&id=71201&format=png&color=ffffff' }} 
+                    style={styles.iconeEdit} 
+                />
             </View>
 
-            <TouchableOpacity style={styles.botaoSair} onPress={() => navigation.navigate('Login')}>
+            <View style={styles.dadosAgente}>
+                <View>
+                    <Text style={styles.textoLabel}>Código da Organização</Text>
+                    <Text style={styles.textoValor}>{usuario ? usuario.codigoOrg : '---'}</Text>
+                </View>
+                <Image 
+                    source={{ uri: 'https://img.icons8.com/?size=100&id=71201&format=png&color=ffffff' }} 
+                    style={styles.iconeEdit} 
+                />
+            </View>
+
+            <View style={styles.dadosAgente}>
+                <View>
+                    <Text style={styles.textoLabel}>E-mail</Text>
+                    <Text style={styles.textoValor}>{usuario ? usuario.email : '---'}</Text>
+                </View>
+                <Image 
+                    source={{ uri: 'https://img.icons8.com/?size=100&id=71201&format=png&color=ffffff' }} 
+                    style={styles.iconeEdit} 
+                />
+            </View>
+
+            <TouchableOpacity style={styles.botaoSair} onPress={async () => {
+                await AsyncStorage.removeItem('usuario');
+                navigation.navigate('Login');
+            }}>
                 <Text style={styles.textoSair}>Sair</Text>
             </TouchableOpacity>
         </View>
