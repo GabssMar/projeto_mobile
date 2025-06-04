@@ -3,6 +3,7 @@ import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Image, TextInput,
 import api from '../services/api';
 import * as ImagePicker from 'expo-image-picker';
 
+
 export default function NovaMulta({ navigation }) {
     const [form, setForm] = useState({
         placa: '', modelo: '', fabricante: '', cor: '', ano: '', tipoInfracao: '', local: '', data: '', hora: '', gravidade: '', pontos: '', comentarios: '', foto: null
@@ -28,43 +29,58 @@ export default function NovaMulta({ navigation }) {
     };
 
     const handleSalvar = async () => {
+        if (!form.foto) {
+            Alert.alert('Erro', 'Por favor, selecione uma imagem.');
+            return;
+        }
+    
         setLoading(true);
         try {
-            // Monte o objeto conforme o DTO do backend
-            const dto = {
-                DadosVeiculo: {
-                    Placa: form.placa,
-                    Modelo: form.modelo,
-                    Fabricante: form.fabricante,
-                    Cor: form.cor,
-                    Ano: form.ano,
-                    IdUsuario: 1 // ajuste conforme necessário
-                },
-                DadosProprietario: {
-                    Nome: form.nomeProprietario || '',
-                    Cnh: form.cnh || '',
-                    Cpf: form.cpf || ''
-                },
-                DetalhesInfracao: {
-                    TipoInfracao: form.tipoInfracao,
-                    CodigoInfracao: form.codigoInfracao || '',
-                    LocaInfracao: form.local,
-                    Data: form.data,
-                    Hota: form.hora,
-                    Gravidade: form.gravidade,
-                    PontosCnh: form.pontos
-                },
-                Anexos: {
-                    Evidencia: form.foto || '',
-                    Comentarios: form.comentarios
-                }
-            };
-            await api.post('/multas', dto, {
-                headers: { 'Content-Type': 'application/json' },
+            const formData = new FormData();
+    
+            formData.append('DadosVeiculo', JSON.stringify({
+                Placa: form.placa,
+                Modelo: form.modelo,
+                Fabricante: form.fabricante,
+                Cor: form.cor,
+                Ano: form.ano,
+                IdUsuario: 1
+            }));
+    
+            formData.append('DadosProprietario', JSON.stringify({
+                Nome: form.nomeProprietario || '',
+                Cnh: form.cnh || '',
+                Cpf: form.cpf || ''
+            }));
+    
+            formData.append('DetalhesInfracao', JSON.stringify({
+                TipoInfracao: form.tipoInfracao,
+                CodigoInfracao: form.codigoInfracao || '',
+                LocalInfracao: form.local,
+                Data: form.data.replace(/\/\//g, '/'),
+                Hora: form.hora,
+                Gravidade: form.gravidade,
+                PontosCnh: form.pontos
+            }));
+    
+            formData.append('Comentarios', form.comentarios || '');
+    
+            // 👇 Anexando imagem como arquivo
+            const fileName = form.foto.split('/').pop();
+            const fileType = fileName.split('.').pop();
+    
+            formData.append('Evidencia', {
+                uri: form.foto,
+                name: fileName,
+                type: `image/${fileType}`
             });
+    
+            await api.post('/multas', formData);
+    
             Alert.alert('Sucesso', 'Multa cadastrada com sucesso!');
             navigation.navigate('Multas');
         } catch (error) {
+            console.error(error);
             Alert.alert('Erro', 'Erro ao cadastrar multa.');
         } finally {
             setLoading(false);
@@ -91,25 +107,25 @@ export default function NovaMulta({ navigation }) {
                 <View style={styles.formContainer}>
                     <Text style={styles.titulo}>Dados do carro</Text>
                     <Text style={styles.label}>Placa<Text style={styles.obrigatorio}>*</Text>:</Text>
-                    <TextInput style={styles.input} placeholder="Digite a placa" value={form.placa} onChangeText={v => handleChange('placa', v)} />
+                    <TextInput style={styles.input} placeholder="Digite a placa" value={form.placa} onChangeText={v => handleChange('placa', v.toUpperCase())} />
                     <Text style={styles.label}>Modelo<Text style={styles.obrigatorio}>*</Text>:</Text>
-                    <TextInput style={styles.input} placeholder="Digite o modelo" value={form.modelo} onChangeText={v => handleChange('modelo', v)} />
+                    <TextInput style={styles.input} placeholder="Digite o modelo" value={form.modelo} onChangeText={v => handleChange('modelo', v.toUpperCase())} />
                     <Text style={styles.label}>Fabricante<Text style={styles.obrigatorio}>*</Text>:</Text>
-                    <TextInput style={styles.input} placeholder="Digite o fabricante" value={form.fabricante} onChangeText={v => handleChange('fabricante', v)} />
+                    <TextInput style={styles.input} placeholder="Digite o fabricante" value={form.fabricante} onChangeText={v => handleChange('fabricante', v.toUpperCase())} />
                     <Text style={styles.label}>Cor<Text style={styles.obrigatorio}>*</Text>:</Text>
-                    <TextInput style={styles.input} placeholder="Digite a cor" value={form.cor} onChangeText={v => handleChange('cor', v)} />
+                    <TextInput style={styles.input} placeholder="Digite a cor" value={form.cor} onChangeText={v => handleChange('cor', v.toUpperCase())} />
                     <Text style={styles.label}>Ano<Text style={styles.obrigatorio}>*</Text>:</Text>
-                    <TextInput style={styles.input} placeholder="Digite o ano" keyboardType="numeric" value={form.ano} onChangeText={v => handleChange('ano', v)} />
+                    <TextInput style={styles.input} placeholder="Digite o ano" keyboardType="numeric" value={form.ano} onChangeText={v => handleChange('ano', v.toUpperCase())} />
 
                     <Text style={styles.titulo}>Detalhes da Infração</Text>
                     <Text style={styles.label}>Tipo da Infração<Text style={styles.obrigatorio}>*</Text>:</Text>
-                    <TextInput style={styles.input} placeholder="Digite o tipo da infração" value={form.tipoInfracao} onChangeText={v => handleChange('tipoInfracao', v)} />
+                    <TextInput style={styles.input} placeholder="Digite o tipo da infração" value={form.tipoInfracao} onChangeText={v => handleChange('tipoInfracao', v.toUpperCase())} />
                     <Text style={styles.label}>Local da infração<Text style={styles.obrigatorio}>*</Text>:</Text>
-                    <TextInput style={styles.input} placeholder="Digite o local da infração" value={form.local} onChangeText={v => handleChange('local', v)} />
+                    <TextInput style={styles.input} placeholder="Digite o local da infração" value={form.local} onChangeText={v => handleChange('local', v.toUpperCase())} />
                     <Text style={styles.label}>Data<Text style={styles.obrigatorio}>*</Text>:</Text>
-                    <TextInput style={styles.input} placeholder="DD/MM/AAAA" keyboardType="numeric" value={form.data} onChangeText={v => handleChange('data', v)} />
+                    <TextInput style={styles.input} placeholder="DD/MM/AAAA" keyboardType="numeric" value={form.data.replace(/\//g, '/')} onChangeText={v => handleChange('data', v.replace(/\//g, '//').toUpperCase())} />
                     <Text style={styles.label}>Hora<Text style={styles.obrigatorio}>*</Text>:</Text>
-                    <TextInput style={styles.input} placeholder="HH:MM" keyboardType="numeric" value={form.hora} onChangeText={v => handleChange('hora', v)} />
+                    <TextInput style={styles.input} placeholder="HH:MM" keyboardType="numeric" value={form.hora.replace(/\./g, ':')} onChangeText={v => handleChange('hora', v.replace(/\./g, ':').toUpperCase())} />
                     <Text style={styles.label}>Gravidade<Text style={styles.obrigatorio}>*</Text>:</Text>
                     <View style={styles.selectContainer}>
                         <TouchableOpacity style={[styles.selectOption, gravidade === 'Leve' && styles.selectedOption]} onPress={() => { setGravidade('Leve'); handleChange('gravidade', 'Leve'); }}>
@@ -126,7 +142,7 @@ export default function NovaMulta({ navigation }) {
                         </TouchableOpacity>
                     </View>
                     <Text style={styles.label}>Pontos na CNH<Text style={styles.obrigatorio}>*</Text>:</Text>
-                    <TextInput style={styles.input} placeholder="Digite os pontos" keyboardType="numeric" value={form.pontos} onChangeText={v => handleChange('pontos', v)} />
+                    <TextInput style={styles.input} placeholder="Digite os pontos" keyboardType="numeric" value={form.pontos} onChangeText={v => handleChange('pontos', v.toUpperCase())} />
 
                     <Text style={styles.titulo}>Anexo e observações</Text>
                     <Text style={styles.label}>Foto ou evidência:</Text>
@@ -137,7 +153,7 @@ export default function NovaMulta({ navigation }) {
                         <Image source={{ uri: imagem }} style={styles.fotoPreview} />
                     )}
                     <Text style={styles.label}>Comentários adicionais:</Text>
-                    <TextInput style={[styles.input, { height: 80 }]} placeholder="Digite comentários adicionais" multiline value={form.comentarios} onChangeText={v => handleChange('comentarios', v)} />
+                    <TextInput style={[styles.input, { height: 80 }]} placeholder="Digite comentários adicionais" multiline value={form.comentarios} onChangeText={v => handleChange('comentarios', v.toUpperCase())} />
                     <TouchableOpacity style={styles.botaoSalvar} onPress={handleSalvar} disabled={loading}>
                         {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.textoSalvar}>Salvar</Text>}
                     </TouchableOpacity>
