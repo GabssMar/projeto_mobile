@@ -1,44 +1,67 @@
-# Projeto de Fábrica de Projetos Ágeis - UNIMAR
+# Projeto Mobile de Multas - UNIMAR
 
 ## Descrição
 
-Este projeto foi desenvolvido para a disciplina de **Fábrica de Projetos Ágeis** do curso de **Análise e Desenvolvimento de Sistemas** da **UNIMAR - Universidade de Marília**.
+Aplicativo mobile desenvolvido para a disciplina de **Fábrica de Projetos Ágeis** do curso de **Análise e Desenvolvimento de Sistemas** da **UNIMAR - Universidade de Marília**. O app permite o registro, consulta e validação de multas de trânsito, com envio de evidências (imagens) e gerenciamento de agentes.
 
-## Contexto
+## Funcionalidades Principais
 
-Durante o segundo ano do curso, a disciplina propôs a execução de um projeto prático, onde os alunos teriam a oportunidade de trabalhar em equipe e implementar uma solução de software para a empresa responsável utilizando boas práticas de desenvolvimento ágil.
+- **Login:** Autenticação do agente de trânsito.
+- **Home:** Navegação para Multas, Nova Multa e Conta do agente.
+- **Multas Aplicadas:** Lista de multas registradas, com botão para validar a placa via API.
+- **Nova Multa:** Cadastro de nova multa, com preenchimento de dados do veículo, infração, envio de foto e comentários.
+- **Conta:** Visualização dos dados do agente logado.
 
 ## Tecnologias Utilizadas
 
-- **Linguagem de Programação**: JavaScript
-- **Framework**: React Native
-- **Ferramentas Ágeis**: Figma, Notion
-- **Controle de Versão**: Git e GitHub
-
-## Funcionalidades
-
-- **Funcionalidade 1**: Tela de Login
-  
-A tela de login apresenta o logo da empresa que acolheu nossa sala durante o projeto, ela consta com os campos para login do agente de trânsito que irá aplicar a multa/aviso.
-
-
-- **Funcionalidade 2**: Tela Home
-
-A tela Home apresenta cinco botões, sendo eles "Multas Aplicadas", "Avisos Aplicados", "Nova Multa", "Novo Aviso" e "Voltar" para voltar à tela de Login.
-
-A tela consta também com dois botões superiores, um deles para abrir o menu, e o outro para que o agente possa acessar sua conta.
+- **Linguagem:** JavaScript
+- **Framework:** React Native (Expo)
+- **Gerenciamento de Estado:** useState, useEffect
+- **API:** Axios
+- **Envio de Imagem:** expo-image-picker
+- **Backend:** .NET (exemplo de URL padrão)
 
 ## Como Rodar o Projeto
 
 ### Pré-requisitos
+- Node.js (recomendado 18.x ou superior)
+- Expo Go (instale no seu celular via Google Play/App Store)
+- Backend rodando e acessível (exemplo: .NET rodando em http://localhost:5163)
 
-Certifique-se de ter os seguintes requisitos instalados:
-
-- Node.js (versão [22.14.0])
-- Expo Go
-
-### Instalando
+### Instalação
 
 1. Clone o repositório:
    ```bash
    git clone https://github.com/[usuario]/[nome-do-repositorio].git
+   cd [nome-do-repositorio]
+   ```
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
+3. Configure a URL do backend em `services/api.js`:
+   ```js
+   baseURL: 'http://SEU_IP_LOCAL:5163', // Use o IP da sua máquina se for testar no celular
+   ```
+   > **Dica:** Para testar no celular físico, troque 'localhost' pelo IP da sua máquina na mesma rede Wi-Fi.
+
+4. Inicie o projeto:
+   ```bash
+   npx expo start
+   ```
+   Escaneie o QR Code com o app Expo Go no seu celular.
+
+## Observações Importantes
+- **Envio de Imagem:** O envio de fotos funciona apenas no mobile (Android/iOS). No Expo Web, o envio de arquivos pode não funcionar corretamente.
+- **Validação de Placa:** Na tela de Multas, use o botão "Validar Multa" para checar a placa via API (`/validar-placa?placa=PLACA`).
+- **Backend:** Certifique-se de que o backend está rodando e aceitando requisições do app.
+
+## Estrutura de Telas
+- `LoginScreen.js`: Tela de login do agente
+- `HomeScreen.js`: Tela inicial com navegação
+- `Multas.js`: Lista de multas e validação
+- `NovaMulta.js`: Cadastro de nova multa com envio de imagem
+- `Conta.js`: Dados do agente logado
+
+## Licença
+Projeto acadêmico - UNIMAR
